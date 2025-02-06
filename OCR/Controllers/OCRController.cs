@@ -1,4 +1,5 @@
-﻿using Microsoft.AspNetCore.Mvc;
+﻿using IronOcr;
+using Microsoft.AspNetCore.Mvc;
 using Microsoft.Azure.CognitiveServices.Vision.ComputerVision;
 using Microsoft.Azure.CognitiveServices.Vision.ComputerVision.Models;
 using Microsoft.Rest.Azure.Authentication;
@@ -18,6 +19,14 @@ namespace OCR.Controllers
         private readonly string endpoint = "https://agileocr.cognitiveservices.azure.com/";
         private readonly string subscriptionKey = "G0IEmnshA6IQxEWeqJhAQEQJ3QbMRb7Of5MiGCmiKS6fP4gV5hZiJQQJ99BBACqBBLyXJ3w3AAAFACOGfuao";
 
+
+        [HttpPost("ironocr")]
+        public async Task<IActionResult> OCRDetectIron([FromBody] OCRRequest request) {
+            var ocr = new IronTesseract();
+            using var input = new OcrInput("E:\\Pramesh\\OCR\\OCR\\Screenshot 2025-02-06 120012.png");
+            var result = ocr.Read(input);
+            return Ok(result.Text);
+        }
         // POST api/<OCRController>/detect
         [HttpPost("detect")]
         public async Task<IActionResult> OCRDetectAsync([FromBody] OCRRequest request)
